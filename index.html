@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Advice generator</title>
+
+  <style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: cursive;
+    }
+
+    .advice-id{
+        color:  #1f2914; 
+        text-transform: uppercase;
+        word-spacing: 10px;
+        font-size: 15px;
+    }
+    
+    .advice-text{
+        margin: 20px auto 0; 
+        font-size: 20px;
+        width: 100%;
+        color: #3f5329;
+    }
+    
+    .divider{
+        margin: 20px 0 30px;
+        background-size: 100% 100%;
+        width: 100%;
+    }
+    
+    #dice{
+        background-color:#668149;
+        border-radius: 50%;
+        padding: 15px 16px 12px;
+        border: 0;
+        cursor: pointer;
+        margin: 0 auto -50px;
+    }
+    
+    body{
+        background-color: #A0C49D;
+        height: 100vh;
+        display: grid;
+    }
+    
+    main{
+        display: flex;
+        flex-direction: column;
+        padding: 30px 50px;
+        border-radius: 10px;
+        text-align: center;
+        background-color:  #F7FFE5;
+        max-width: 550px;
+        width: fit-content;
+        height: fit-content;
+        margin: auto 20px;
+    }
+    
+    #dice img{
+        width: 23px;
+    }
+    
+    #dice:hover {
+        box-shadow: 0 0 40px  #71865c;
+    }
+    
+    @media (min-width: 530px) {
+        main{
+            margin: auto;
+        }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="advice-container">
+      <b class="advice-id">Advice #<span id="advice-number"></span></b>
+      <p class="advice-text"> Loading..</p>
+    </div><br>
+
+    <button id="dice"><img src="icon-dice.svg" alt="Dice to generate new advice"></button>
+  </main>
+
+  <script>
+    const dice = document.getElementById("dice");
+    const adviceNum = document.getElementById("advice-number");
+    const adviceText = document.querySelector(".advice-text");
+
+    window.onload = showQuote;
+
+    dice.addEventListener("click", function(){
+        showQuote();
+    });
+
+    function showQuote() {
+        fetch("https://api.adviceslip.com/advice")
+        .then(response => response.json())
+        .then((data) => data.slip)
+        .then((data) => {
+            adviceNum.textContent = data.id;
+            adviceText.textContent = data.advice;
+        })
+        .catch((error) => {
+            alert(`Error ${error}`);
+        })
+    }
+  </script>
+</body>
+</html>
